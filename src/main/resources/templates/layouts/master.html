@@ -10,19 +10,28 @@
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="/css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+
+    <style>
+        .navbar-nav {
+    margin-left: auto !important;
+}
+    </style>
 </head>
 <body class="sb-nav-fixed">
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark" th:fragment="navelement">
     <!-- Navbar Brand-->
-    <a class="navbar-brand ps-3" href="index.html">Expense Tracker</a>
+    <a class="navbar-brand ps-3" href="/">Expense Tracker</a>
     <!-- Sidebar Toggle-->
-    <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-    <!-- Navbar Search-->
-
+    <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!">
+        <i class="fas fa-bars"></i>
+    </button>
     <!-- Navbar-->
     <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+        <!-- User Dropdown -->
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-user fa-fw"></i>
+            </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="#!">Settings</a></li>
                 <li><a class="dropdown-item" href="#!">Activity Log</a></li>
@@ -32,28 +41,41 @@
         </li>
     </ul>
 </nav>
+
 <div id="layoutSidenav">
     <div id="layoutSidenav_nav" th:fragment="sidebarelement">
         <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
             <div class="sb-sidenav-menu">
                 <div class="nav">
                     <div class="sb-sidenav-menu-heading">Core</div>
-                    <a class="nav-link" href="/">
+                    <a class="nav-link" href="/" th:classappend="${requestURI == '/' ? 'active' : ''}">
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                         Dashboard
                     </a>
                     <div class="sb-sidenav-menu-heading">Manage Reports</div>
-                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+
+                    <a class="nav-link" href="#"
+                       data-bs-toggle="collapse"
+                       data-bs-target="#collapseLayouts"
+                       aria-expanded="${requestURI == '/transactions' || requestURI.startsWith('/transactions/') ? 'true' : 'false'}"
+                       aria-controls="collapseLayouts"
+                       th:classappend="${requestURI == '/transactions' || requestURI.startsWith('/transactions/') ? ' active' : 'collapsed'}">
                         <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                         Transactions
                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                     </a>
-                    <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+
+                    <!-- Collapsible Menu for Transactions -->
+                    <div class="collapse" id="collapseLayouts"
+                         th:classappend="${requestURI == '/transactions' || requestURI.startsWith('/transactions/') ? ' show' : ''}"
+                         aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav">
-                            <a class="nav-link" href="/transactions">Transaction Listing</a>
-                            <a class="nav-link" href="/transactions/add">Create New Transaction</a>
+                            <!-- Nested links with active class -->
+                            <a class="nav-link" href="/transactions" th:classappend="${requestURI == '/transactions' ? ' active' : ''}">Transaction Listing</a>
+                            <a class="nav-link" href="/transactions/add" th:classappend="${requestURI == '/transactions/add' ? ' active' : ''}">Create New Transaction</a>
                         </nav>
                     </div>
+
 
 
 

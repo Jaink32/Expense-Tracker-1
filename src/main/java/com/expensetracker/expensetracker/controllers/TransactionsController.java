@@ -3,6 +3,7 @@ package com.expensetracker.expensetracker.controllers;
 import com.expensetracker.expensetracker.models.Transaction;
 import com.expensetracker.expensetracker.services.TransactionRepository;
 import com.expensetracker.expensetracker.services.TransactionService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/transactions")
@@ -39,11 +41,11 @@ public class TransactionsController {
                                    @RequestParam(required = false) String amountFilter, // "=", "<=", ">="
                                    @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
                                    @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate,
-                                   Model model) {
+                                   Model model, HttpServletRequest request) {
 
         Pageable pageable = PageRequest.of(page, size);
         Page<Transaction> transactions = transactionService.findTransactions(description, amount, amountFilter, startDate, endDate, pageable);
-
+        model.addAttribute("requestURI", request.getRequestURI());
         model.addAttribute("transactions", transactions);
         model.addAttribute("description", description);
         model.addAttribute("amount", amount);
@@ -56,7 +58,8 @@ public class TransactionsController {
 
     // Method to show the form to add a new transaction
     @GetMapping("/add")
-    public String showTransactionForm(Model model) {
+    public String showTransactionForm(Model model, HttpServletRequest request) {
+        model.addAttribute("requestURI", request.getRequestURI());
         model.addAttribute("transaction", new Transaction());
         model.addAttribute("pageTitle", "Add New Transaction - Expense Tracker");
         return "add-transaction";
@@ -90,10 +93,12 @@ public class TransactionsController {
     }
 
     @GetMapping("/edit/{id}")
-    public String showEditForm(@PathVariable Long id, Model model) {
+    public String showEditForm(@PathVariable Long id, Model model, HttpServletRequest request) {
         Transaction transaction = transactionService.getTransactionById(id);
+        model.addAttribute("requestURI", request.getRequestURI());
         if (transaction != null) {
             model.addAttribute("transaction", transaction);
+
             model.addAttribute("pageTitle", "Edit Transaction - Expense Tracker");
             return "edit-transaction"; // The edit page template
         } else {
@@ -105,7 +110,7 @@ public class TransactionsController {
     public String updateTransaction(@PathVariable Long id,
                                     @Valid @ModelAttribute("transaction") Transaction transaction,
                                     BindingResult result,
-                                    RedirectAttributes redirectAttributes) {
+                                    RedirectAttributes redirectAttributes, HttpServletRequest request) {
         if (result.hasErrors()) {
             return "edit-transaction"; // Return to the form if there are validation errors
         }
@@ -117,6 +122,8 @@ public class TransactionsController {
         redirectAttributes.addFlashAttribute("successMessage", "Transaction updated successfully!");
         return "redirect:/transactions"; // Redirect back to transaction list
     }
+
+
 
 
 
