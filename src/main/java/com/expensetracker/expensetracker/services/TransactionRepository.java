@@ -27,4 +27,26 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
             @Param("startDate") LocalDate startDate,
             @Param("endDate") LocalDate endDate,
             Pageable pageable);
+
+    // Custom query to calculate the sum of expenses within a date range
+    @Query("SELECT COALESCE(SUM(t.amount), 0) FROM Transaction t " +
+            "WHERE t.transactionType = 'EXPENSE' " +
+            "AND t.date BETWEEN :startDate AND :endDate")
+    double sumExpensesBetweenDates(@Param("startDate") LocalDate startDate,
+                                   @Param("endDate") LocalDate endDate);
+
+    // For incomes
+    @Query("SELECT COALESCE(SUM(t.amount), 0) FROM Transaction t " +
+            "WHERE t.transactionType = 'INCOME' " +
+            "AND t.date BETWEEN :startDate AND :endDate")
+    double sumIncomesBetweenDates(@Param("startDate") LocalDate startDate,
+                                  @Param("endDate") LocalDate endDate);
+
+
+    // Custom query to count transactions between two dates
+    @Query("SELECT COUNT(t) FROM Transaction t WHERE t.date BETWEEN :startDate AND :endDate")
+    Long countTransactionsBetweenDates(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+
+
+
 }

@@ -46,5 +46,84 @@
 <script src="js/scripts.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
 <script src="js/datatables-simple-demo.js"></script>
+
+<!-- JavaScript for handling AJAX requests -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+
+        $.ajax({
+            url: "/total-expenses",
+            method: "GET",
+            success: function(data) {
+                $('#total-expenses').html(`
+                <div class="expense-details">
+                    <div class="expense-item"><span class="label">Monthly:</span> <span class="value">$${data.monthly.toFixed(2)}</span></div>
+                    <div class="expense-item"><span class="label">Weekly:</span> <span class="value">$${data.weekly.toFixed(2)}</span></div>
+                    <div class="expense-item"><span class="label">Yearly:</span> <span class="value">$${data.yearly.toFixed(2)}</span></div>
+                </div>
+            `);
+            },
+            error: function(error) {
+                $('#total-expenses').html('Error fetching data');
+            }
+        });
+
+
+         // Fetch Total Incomes Data
+    $.ajax({
+        url: "/total-incomes",
+        method: "GET",
+        success: function(data) {
+             $('#total-incomes').html(`
+                <div class="expense-details">
+                    <div class="income-item">
+                        <span class="label">Monthly:</span> <span class="value">$${data.monthly.toFixed(2)}</span>
+                    </div>
+                    <div class="income-item">
+                        <span class="label">Weekly:</span> <span class="value">$${data.weekly.toFixed(2)}</span>
+                    </div>
+                    <div class="income-item">
+                        <span class="label">Yearly:</span> <span class="value">$${data.yearly.toFixed(2)}</span>
+                    </div>
+                </div>
+            `);
+        },
+        error: function(error) {
+            $('#total-incomes').html('Error fetching data');
+        }
+    });
+
+    // Fetch Total Transactions Data
+    $.ajax({
+        url: "/total-transactions", // Endpoint you defined in the controller
+        method: "GET",
+        success: function(data) {
+            // Display the total transactions data in the HTML
+            $('#total-transactions').html(`
+                <div class="transaction-details">
+                    <div class="transaction-item"><span class="label">Monthly:</span> <span class="value">${data.monthly}</span></div>
+                    <div class="transaction-item"><span class="label">Weekly:</span> <span class="value">${data.weekly}</span></div>
+                    <div class="transaction-item"><span class="label">Yearly:</span> <span class="value">${data.yearly}</span></div>
+                </div>
+            `);
+        },
+        error: function(error) {
+            // If there is an error with the AJAX request, display an error message
+            $('#total-transactions').html('Error fetching data');
+        }
+    });
+
+
+
+
+
+
+
+
+    });
+
+
+</script>
 </body>
 </html>
