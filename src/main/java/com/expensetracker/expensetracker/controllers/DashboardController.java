@@ -55,6 +55,33 @@ public class DashboardController {
     }
 
 
+    // Endpoint for total incomes by month
+    @GetMapping("/total-incomes-by-month")
+    @ResponseBody
+    public ResponseEntity<Map<String, Double>> getTotalIncomesByMonth() {
+        Map<String, Double> incomesByMonth = transactionService.getTotalIncomesByMonth();
+        return ResponseEntity.ok(incomesByMonth);
+    }
+
+    // Endpoint for total expenses by month
+    @GetMapping("/total-expenses-by-month")
+    @ResponseBody
+    public ResponseEntity<Map<String, Double>> getTotalExpensesByMonth() {
+        Map<String, Double> expensesByMonth = transactionService.getTotalExpensesByMonth();
+        return ResponseEntity.ok(expensesByMonth);
+    }
+    //
+    // Endpoint for total transactions count by month
+    @GetMapping("/total-transactions-by-month")
+    @ResponseBody
+    public ResponseEntity<Map<String, Integer>> getTotalTransactionsByMonth() {
+        Map<String, Integer> transactionsByMonth = transactionService.getTotalTransactionsByMonth();
+        return ResponseEntity.ok(transactionsByMonth);
+    }
+
+
+
+
 
 
 

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.time.temporal.TemporalAdjusters;
 import java.util.HashMap;
 import java.util.Map;
@@ -106,6 +107,76 @@ public class TransactionService {
 
         return totalIncomes;
     }
+
+
+    public Map<String, Double> getTotalIncomesByMonth() {
+        Map<String, Double> totalIncomesByMonth = new HashMap<>();
+
+        // Get the current year
+        LocalDate currentDate = LocalDate.now();
+        int currentYear = currentDate.getYear();
+
+        // Loop through each month of the current year
+        for (int month = 1; month <= 12; month++) {
+            YearMonth yearMonth = YearMonth.of(currentYear, month);
+            LocalDate firstDayOfMonth = yearMonth.atDay(1); // First day of the month
+            LocalDate lastDayOfMonth = yearMonth.atEndOfMonth(); // Last day of the month
+
+            // Calculate total incomes for the month
+            Double totalIncome = transactionRepository.countIncomesBetweenDates(firstDayOfMonth, lastDayOfMonth);
+
+            // Check for null value to avoid NullPointerException
+            totalIncomesByMonth.put(yearMonth.getMonth().name(), totalIncome != null ? totalIncome : 0.0);
+        }
+
+        return totalIncomesByMonth;
+    }
+
+    public Map<String, Double> getTotalExpensesByMonth() {
+        Map<String, Double> totalExpensesByMonth = new HashMap<>();
+
+        // Get the current year
+        LocalDate currentDate = LocalDate.now();
+        int currentYear = currentDate.getYear();
+
+        // Loop through each month of the current year
+        for (int month = 1; month <= 12; month++) {
+            YearMonth yearMonth = YearMonth.of(currentYear, month);
+            LocalDate firstDayOfMonth = yearMonth.atDay(1); // First day of the month
+            LocalDate lastDayOfMonth = yearMonth.atEndOfMonth(); // Last day of the month
+
+            // Calculate total expenses for the month
+            Double totalExpense = transactionRepository.countExpensesBetweenDates(firstDayOfMonth, lastDayOfMonth);
+
+            // If no expenses found (null), set totalExpense to 0.0
+            totalExpensesByMonth.put(yearMonth.getMonth().name(), totalExpense != null ? totalExpense : 0.0);
+        }
+
+        return totalExpensesByMonth;
+    }
+    //
+    // Method to retrieve total transactions count by month for the current year
+    public Map<String, Integer> getTotalTransactionsByMonth() {
+        Map<String, Integer> totalTransactionsByMonth = new HashMap<>();
+
+        // Get the current year
+        LocalDate currentDate = LocalDate.now();
+        int currentYear = currentDate.getYear();
+
+        // Loop through each month of the current year
+        for (int month = 1; month <= 12; month++) {
+            YearMonth yearMonth = YearMonth.of(currentYear, month);
+            LocalDate firstDayOfMonth = yearMonth.atDay(1); // First day of the month
+            LocalDate lastDayOfMonth = yearMonth.atEndOfMonth(); // Last day of the month
+
+            // Calculate total transactions for the month
+            int totalTransactions = transactionRepository.countTransactionsMonth(firstDayOfMonth, lastDayOfMonth);
+            totalTransactionsByMonth.put(yearMonth.getMonth().name(), totalTransactions);
+        }
+
+        return totalTransactionsByMonth;
+    }
+
 
 
 }
