@@ -1,6 +1,8 @@
 package com.expensetracker.expensetracker.controllers;
 
+import com.expensetracker.expensetracker.models.Category;
 import com.expensetracker.expensetracker.models.Transaction;
+import com.expensetracker.expensetracker.services.CategoryService;
 import com.expensetracker.expensetracker.services.TransactionRepository;
 import com.expensetracker.expensetracker.services.TransactionService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,6 +34,9 @@ public class TransactionsController {
     @Autowired
     private TransactionService transactionService;
 
+    @Autowired
+    private CategoryService categoryService;
+
     // Method to list all transactions
     @GetMapping
     public String listTransactions(@RequestParam(defaultValue = "0") int page,
@@ -59,6 +64,8 @@ public class TransactionsController {
     // Method to show the form to add a new transaction
     @GetMapping("/add")
     public String showTransactionForm(Model model, HttpServletRequest request) {
+        List<Category> categories = categoryService.getAllCategories();
+        model.addAttribute("categories", categories); // Pass categories to the form
         model.addAttribute("requestURI", request.getRequestURI());
         model.addAttribute("transaction", new Transaction());
         model.addAttribute("pageTitle", "Add New Transaction - Expense Tracker");
@@ -97,6 +104,8 @@ public class TransactionsController {
         Transaction transaction = transactionService.getTransactionById(id);
         model.addAttribute("requestURI", request.getRequestURI());
         if (transaction != null) {
+            List<Category> categories = categoryService.getAllCategories();
+            model.addAttribute("categories", categories); // Pass categories to the form
             model.addAttribute("transaction", transaction);
 
             model.addAttribute("pageTitle", "Edit Transaction - Expense Tracker");

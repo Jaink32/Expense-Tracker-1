@@ -67,6 +67,7 @@
                 <th>Amount</th>
                 <th>Date</th>
                 <th>Transaction Type</th>
+                <th>Category</th>
                 <th>Actions</th>
               </tr>
               </thead>
@@ -77,6 +78,7 @@
                 <td th:text="${transaction.amount}">$100</td>
                 <td th:text="${transaction.date}">2023-11-01</td>
                 <td th:text="${transaction.transactionType}">2023-11-01</td>
+                <td th:text="${transaction.category.name}"></td>
                 <td>
                   <a href="javascript:void(0)" class="btn btn-info btn-sm view-transaction" th:data-id="${transaction.id}">View</a>
                   <a th:href="@{'/transactions/edit/' + ${transaction.id}}" class="btn btn-warning btn-sm">Edit</a>

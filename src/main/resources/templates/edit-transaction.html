@@ -53,6 +53,17 @@
                                     <div th:if="${#fields.hasErrors('transactionType')}" th:errors="*{transactionType}" class="text-danger"></div>
                                 </div>
 
+                                <!-- Category Field -->
+                                <div class="form-group mb-3">
+                                    <label for="category">Category</label>
+                                    <select id="category" th:field="*{category}" class="form-control" required>
+                                        <option th:each="category : ${categories}"
+                                                th:value="${category.id}"
+                                                th:text="${category.name}">Select Category</option>
+                                    </select>
+                                    <div th:if="${#fields.hasErrors('category')}" th:errors="*{category}" class="text-danger"></div>
+                                </div>
+
 
                                 <!-- Submit Button -->
                                 <button type="submit" class="btn btn-primary">Update Transaction</button>

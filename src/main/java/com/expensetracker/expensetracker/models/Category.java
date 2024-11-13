@@ -26,6 +26,9 @@ public class Category {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    public Category() {
+    }
+
     public Category(String name) {
         this.name = name;
     }

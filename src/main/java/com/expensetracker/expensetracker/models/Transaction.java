@@ -30,10 +30,17 @@ public class Transaction {
     @Enumerated(EnumType.STRING)
     private TransactionType transactionType; // Enum to define income or expense
 
+
     public enum TransactionType {
         INCOME,
         EXPENSE
     }
+
+    @ManyToOne
+    @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false)
+    private Category category; // Foreign Key to Category
+
+
 
     public Long getId() {
         return id;
@@ -74,4 +81,13 @@ public class Transaction {
     public void setTransactionType(TransactionType transactionType) {
         this.transactionType = transactionType;
     }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
 }

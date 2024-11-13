@@ -61,7 +61,7 @@
                        data-bs-target="#collapseLayouts"
                        aria-expanded="${requestURI == '/transactions' || requestURI.startsWith('/transactions/') ? 'true' : 'false'}"
                        aria-controls="collapseLayouts"
-                       th:classappend="${requestURI == '/transactions' || requestURI.startsWith('/transactions/') ? ' active' : 'collapsed'}">
+                       th:classappend="${requestURI == '/transactions' || requestURI.startsWith('/transactions/') || requestURI == '/categories' || requestURI == '/categories/add' ? ' active' : 'collapsed'}">
                         <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                         Transactions
                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -69,12 +69,14 @@
 
                     <!-- Collapsible Menu for Transactions -->
                     <div class="collapse" id="collapseLayouts"
-                         th:classappend="${requestURI == '/transactions' || requestURI.startsWith('/transactions/') ? ' show' : ''}"
+                         th:classappend="${requestURI == '/transactions' || requestURI.startsWith('/transactions') || requestURI == '/categories' || requestURI == '/categories/add' ? ' show' : ''}"
                          aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav">
                             <!-- Nested links with active class -->
                             <a class="nav-link" href="/transactions" th:classappend="${requestURI == '/transactions' ? ' active' : ''}">Transaction Listing</a>
                             <a class="nav-link" href="/transactions/add" th:classappend="${requestURI == '/transactions/add' ? ' active' : ''}">Create New Transaction</a>
+                            <a class="nav-link" href="/categories" th:classappend="${requestURI == '/categories' ? ' active' : ''}">Categories</a>
+                            <a class="nav-link" href="/categories/add" th:classappend="${requestURI == '/categories/add' ? ' active' : ''}">Create New Category</a>
                         </nav>
                     </div>
 
